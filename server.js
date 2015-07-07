@@ -9,7 +9,7 @@ var http        = require('http'),
                     max     : 10
                   }),
     rdbCrud     = require('./private/rethinkdbcrud'),
-    crudUsers   = rdbCrud({ r: r, table: 'tblUsers'});
+    crudUsers   = rdbCrud({ r: r, table: 'tblUsers' });
 
 // VIEWS
 app.set('views', __dirname + '/views');
@@ -30,6 +30,58 @@ router.get('/', function(req, res, next) {
   res.render('main/index');
 });
 
+// CREATE
+/*
+crudUsers.create({
+            item: [{ name: 'A', age: 31 }, { name: 'B', age: 32 }],
+            validate: function(item) {
+              if (item.age < 30)
+                throw 'User should be older than 29.'
+            }
+          })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+// READ
+/* Read without Filter */
+/*
+crudUsers.read()
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+ /* Read with Filter by object */
+ /*
+ crudUsers.read({ filter: { age: 31 } })
+          .then(function(result){
+            console.log(result);
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+*/
+
+/* Read with Filter by statement */
+/*
+crudUsers.read({
+            filter: r.row('age').lt(30)
+          })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
 
 // ROUTER
 app.use(router);
