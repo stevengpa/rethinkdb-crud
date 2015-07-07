@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@104.131.100.80:/opt/git/rethinkdbcrud.git"
+    "url": "https://github.com/StevenPerez/rethinkdb-crud.git"
   },
   "author": "Steven Pérez <steven.gpa.git@gmail.com>",
   "license": "ISC",
