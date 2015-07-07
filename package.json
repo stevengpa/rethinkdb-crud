@@ -1,6 +1,6 @@
 {
   "name": "rethinkdb-crud",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Provide a simple RethinkDB library for CRUD events for Node JS.",
   "main": "index.js",
   "scripts": {
