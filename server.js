@@ -8,7 +8,7 @@ var http        = require('http'),
                     buffer  : 5,
                     max     : 10
                   }),
-    rdbCrud     = require('./private/rethinkdbcrud'),
+    rdbCrud     = require('./dist/rethinkdb-crud'),
     crudUsers   = rdbCrud({ r: r, table: 'tblUsers' });
 
 // VIEWS
@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
 // CREATE
 /*
 crudUsers.create({
-            item: [{ name: 'A', age: 31 }, { name: 'B', age: 32 }],
+            item: [{ name: 'marta', age: 31 }, { name: 'felipe', age: 32 }],
             validate: function(item) {
               if (item.age < 30)
                 throw 'User should be older than 29.'
@@ -48,7 +48,7 @@ crudUsers.create({
 */
 
 // READ
-/* Read without Filter */
+/* Read All */
 /*
 crudUsers.read()
          .then(function(result){
@@ -74,7 +74,130 @@ crudUsers.read()
 /*
 crudUsers.read({
             filter: r.row('age').lt(30)
+                    .and
+                    ( r.row('age').ge(25) )
           })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+// UPDATE
+/* Update All */
+/*
+crudUsers.update({
+            set: { age: 10 }
+         })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+ /* Update with Filter by object */
+ /*
+ crudUsers.update({
+             set: { age: 29 },
+             filter: { name: 'steven' }
+          })
+          .then(function(result){
+            console.log(result);
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+*/
+
+/* Update with Filter by statement */
+/*
+crudUsers.update({
+            set: { name: 'vane' },
+            filter: r.row('name').eq('ana')
+         })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+// DELETE
+/* Delete All */
+/*
+crudUsers.delete()
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+/* Delete with Filter by object */
+/*
+crudUsers.delete({
+          filter: { name: 'A' }
+         })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+/* Delete with Filter by statement */
+/*
+crudUsers.delete({
+          filter: r.row('age').gt(30)
+         })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+// COUNT
+/* Count All */
+/*
+crudUsers.count()
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+/* Count with Filter by object */
+/*
+crudUsers.count({
+          filter: { name: 'steven' }
+         })
+         .then(function(result){
+           console.log(result);
+         })
+         .catch(function(err){
+           console.log(err);
+         });
+*/
+
+/* Count with Filter by statement */
+/*
+crudUsers.count({
+          filter: r.row('age').ge(25)
+                   .and(
+                     r.row('age').le(30)
+                   )
+         })
          .then(function(result){
            console.log(result);
          })

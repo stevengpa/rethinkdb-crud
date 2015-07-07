@@ -41,8 +41,48 @@ var rdbCrud = function(params){
   valObjectParams();
 
   return {
+
+    create: function create(params){
+
+      params          = params || {};
+      params.validate = params.validate || function(){};
+
+      return new Promise(function(resolve, reject){
+        try {
+
+          if (!params.hasOwnProperty('item'))
+            throw 'item property is missing.';
+
+          if (!Array.isArray(params.item))
+            throw 'item property should be an array.';
+
+          if (typeof params.validate !== 'function')
+            throw 'validate property should be a function.';
+
+          // Execute validation
+          params.item.forEach(function(item){
+              params.validate(item);
+          });
+
+          r.table(table)
+           .insert(params.item)
+           .run(function(err, results){
+
+            if (err) {
+              throw err;
+            } else {
+                resolve(results);
+            }
+
+          });
+
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+    },
     
-    // Read
     read: function read(params){
 
       params = params || {};
@@ -87,49 +127,6 @@ var rdbCrud = function(params){
 
     },
 
-    // Create
-    create: function create(params){
-
-      params          = params || {};
-      params.validate = params.validate || function(){};
-
-      return new Promise(function(resolve, reject){
-        try {
-
-          if (!params.hasOwnProperty('item'))
-            throw 'item property is missing.';
-
-          if (!Array.isArray(params.item))
-            throw 'item property should be an array.';
-
-          if (typeof params.validate !== 'function')
-            throw 'validate property should be a function.';
-
-          // Execute validation
-          params.item.forEach(function(item){
-              params.validate(item);
-          });
-
-          r.table(table)
-           .insert(params.item)
-           .run(function(err, results){
-
-            if (err) {
-              throw err;
-            } else {
-                resolve(results);
-            }
-
-          });
-
-        } catch (err) {
-          reject(err);
-        }
-      });
-
-    },
-
-    // Update
     update: function update(params){
 
       params = params || {};
@@ -137,16 +134,16 @@ var rdbCrud = function(params){
       return new Promise(function(resolve, reject){
         try {
 
-          if (!params.hasOwnProperty('item'))
-            throw 'item property is missing.';
+          if (!params.hasOwnProperty('set'))
+            throw 'set property is missing.';
 
-          if (typeof params.item !== 'object')
-              throw 'item property should be an object.';
+          if (typeof params.set !== 'object')
+              throw 'set property should be an object.';
 
           if (!params.hasOwnProperty('filter')) {
             // If it doesn't have a filter
             r.table(table)
-             .update(params.item)
+             .update(params.set)
              .run(function(err, results){
 
               if (err) {
@@ -164,7 +161,7 @@ var rdbCrud = function(params){
 
             r.table(table)
               .filter(params.filter)
-              .update(params.item)
+              .update(params.set)
               .run(function(err, results){
 
               if (err) {
@@ -182,8 +179,101 @@ var rdbCrud = function(params){
       });
 
     },
-    // Delete
-    // Exists
+
+    delete: function (params){
+
+      params = params || {};
+
+      return new Promise(function(resolve, reject){
+        try {
+
+          if (!params.hasOwnProperty('filter')) {
+            // If it doesn't have a filter
+            r.table(table)
+             .delete()
+             .run(function(err, results){
+
+              if (err) {
+                throw err;
+              } else {
+                  resolve(results);
+              }
+
+            });
+
+          } else {
+            // If it has a filter
+            if (typeof params.filter !== 'object' && typeof params.filter !== 'function')
+              throw 'filter property should be an object or function.';
+
+            r.table(table)
+              .filter(params.filter)
+              .delete()
+              .run(function(err, results){
+
+              if (err) {
+                throw err;
+              } else {
+                  resolve(results);
+              }
+
+            });
+          }
+
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+    },
+
+    count: function count(params){
+
+      params = params || {};
+
+      return new Promise(function(resolve, reject){
+        try {
+
+          if (!params.hasOwnProperty('filter')) {
+            // If it doesn't have a filter
+            r.table(table)
+             .count()
+             .run(function(err, results){
+
+              if (err) {
+                throw err;
+              } else {
+                  resolve(results);
+              }
+
+            });
+
+          } else {
+            // If it has a filter
+            if (typeof params.filter !== 'object' && typeof params.filter !== 'function')
+              throw 'filter property should be an object or function.';
+
+            r.table(table)
+              .filter(params.filter)
+              .count()
+              .run(function(err, results){
+
+              if (err) {
+                throw err;
+              } else {
+                  resolve(results);
+              }
+
+            });
+          }
+
+        } catch (err) {
+          reject(err);
+        }
+      });
+
+    }
+
   }
 
 };
