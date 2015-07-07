@@ -1,5 +1,5 @@
 {
-  "name": "rethinkdbcrud",
+  "name": "rethinkdb-crud",
   "version": "1.0.0",
   "description": "Provide a simple RethinkDB library for CRUD events for Node JS.",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@104.131.100.80:/opt/git/crud-RethinkDB.git"
+    "url": "git@104.131.100.80:/opt/git/rethinkdbcrud.git"
   },
   "author": "Steven Pérez <steven.gpa.git@gmail.com>",
   "license": "ISC",
